@@ -1,11 +1,13 @@
 import { Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useRoutes } from "react-router-dom";
 import Home from "./components/home";
 import LoginPage from "./components/auth/LoginPage";
 import { AuthGuard } from "./components/auth/AuthGuard";
 import routes from "tempo-routes";
 
-function App() {
+const App = () => {
+  const routing = useRoutes(routes);  // Ensure routes are in the correct format
+
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
@@ -21,10 +23,11 @@ function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+        {import.meta.env.VITE_TEMPO === "true" && routing} {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+
       </>
     </Suspense>
   );
-}
+};
 
 export default App;

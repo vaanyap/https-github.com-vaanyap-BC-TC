@@ -8,6 +8,7 @@ export const AuthGuard = ({ children }: { children: ReactNode }) => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
+  
 
   if (!isAuthenticated) {
     loginWithRedirect(); // Redirect to Auth0 login

@@ -5,9 +5,7 @@ import LoginPage from "./components/auth/LoginPage";
 import { AuthGuard } from "./components/auth/AuthGuard";
 import routes from "tempo-routes";
 
-const App = () => {
-  const routing = useRoutes(routes);  // Ensure routes are in the correct format
-
+function App() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
@@ -23,11 +21,10 @@ const App = () => {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        {import.meta.env.VITE_TEMPO === "true" && routing} {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
-
+        {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>
     </Suspense>
   );
-};
+}
 
 export default App;

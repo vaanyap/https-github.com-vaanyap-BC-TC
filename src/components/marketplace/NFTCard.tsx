@@ -1,65 +1,82 @@
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import NFTCardActions from "./NFTCardActions";
+import { useState } from "react";
+import NFTCard from "./NFTCard";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
-interface NFTCardProps {
-  id?: string;
-  name?: string;
-  image?: string;
-  price?: number;
-  collection?: string;
-  rarity?: string;
-  onBuy?: () => void;
-  onBid?: () => void;
-  onTrade?: () => void;
-  onClick?: () => void;
+interface NFT {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  collection: string;
+  rarity: string;
 }
 
-const NFTCard = ({
-  id = "1",
-  name = "Purple Punk #1",
-  image = "https://dummyimage.com/280x280/6b46c1/ffffff&text=NFT",
-  price = 100,
-  collection = "Purple Punks",
-  rarity = "Rare",
-  onBuy = () => {},
-  onBid = () => {},
-  onTrade = () => {},
-  onClick = () => {},
-}: NFTCardProps) => {
-  return (
-    <Card
-      className="bg-white w-[280px] h-[400px] flex flex-col overflow-hidden cursor-pointer transition-transform hover:scale-105"
-      onClick={onClick}
-    >
-      <div className="relative w-full h-[280px]">
-        <img src={image} alt={name} className="w-full h-full object-cover" />
-        <Badge
-          className="absolute top-2 right-2 bg-purple-600"
-          variant="secondary"
-        >
-          {rarity}
-        </Badge>
-      </div>
+const defaultNFTs: NFT[] = [
+  {
+    id: "1",
+    name: "Purple Punk #1",
+    image: "https://dummyimage.com/280x280/6b46c1/ffffff&text=NFT+1",
+    price: 100,
+    collection: "Purple Punks",
+    rarity: "Rare",
+  },
+  {
+    id: "2",
+    name: "Purple Punk #2",
+    image: "https://dummyimage.com/280x280/6b46c1/ffffff&text=NFT+2",
+    price: 150,
+    collection: "Purple Punks",
+    rarity: "Epic",
+  },
+  {
+    id: "3",
+    name: "Purple Punk #3",
+    image: "https://dummyimage.com/280x280/6b46c1/ffffff&text=NFT+3",
+    price: 200,
+    collection: "Purple Punks",
+    rarity: "Legendary",
+  },
+];
 
-      <div className="p-4 flex flex-col gap-2">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="font-semibold text-lg">{name}</h3>
-            <p className="text-sm text-gray-500">{collection}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-500">Price</p>
-            <p className="font-bold text-purple-600">
-              {price.toLocaleString()} PC
-            </p>
-          </div>
+const NFTGrid = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [nfts] = useState<NFT[]>(defaultNFTs);
+
+  const filteredNFTs = nfts.filter(
+    (nft) =>
+      nft.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      nft.collection.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  return (
+    <div className="bg-gray-50 w-full min-h-[800px] p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative mb-6 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Input
+            type="text"
+            placeholder="Search NFTs by name or collection..."
+            className="pl-10 bg-white"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
-        <NFTCardActions onBuy={onBuy} onBid={onBid} onTrade={onTrade} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredNFTs.map((nft) => (
+            <NFTCard key={nft.id} {...nft} />
+          ))}
+        </div>
+
+        {filteredNFTs.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No NFTs found matching your search.</p>
+          </div>
+        )}
       </div>
-    </Card>
+    </div>
   );
 };
 
-export default NFTCard;
+export default NFTGrid;

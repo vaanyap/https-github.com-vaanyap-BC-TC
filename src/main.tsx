@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { AUTH0_CONFIG, onRedirectCallback } from "./lib/auth";
 
+
 import { TempoDevtools } from "tempo-devtools";
 TempoDevtools.init();
 
@@ -18,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <App />
       </BrowserRouter>
     </Auth0Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
